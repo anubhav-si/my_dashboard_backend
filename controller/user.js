@@ -9,7 +9,9 @@ async function handleSignup(req,res) {
         username,
         password
     })
-    return res.json({'status':'user signedup succesfully'});
+    return res.json({'message':'user signedup succesfully',
+        'status':'ok'
+    });
 }
 
 module.exports = {handleSignup};
