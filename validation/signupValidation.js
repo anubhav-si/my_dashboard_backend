@@ -1,18 +1,36 @@
-const validator = require('validator');
+const validator = require("validator");
 
- function handleSignupValidation(req,res) {
-    const {email,username,password,terms} = req.body;
+function handleSignupValidation(req, res) {
+  const { email, username, password, terms } = req.body;
 
-    if (!email) throw new Error("please enter email");
-    if (!validator.isEmail(email)) throw new Error("enter a valid email");
+  // Email validation
+  if (!email) {
+    throw new Error("Email is required.");
+  }
+  if (!validator.isEmail(email)) {
+    throw new Error("Please enter a valid email address.");
+  }
 
-    if (!username) throw new Error("please enter username");
-    if (username.length > 10) throw new Error("username should be less than 10 character");
-    
-    if (!password) throw new Error("please enter password");
-    if (password.length < 4 || password.length > 8) throw new Error("password should be in between 4 - 8 character");
-    
-   if(!terms) throw new Error("please accept terms & condition");
+  // Username validation
+  if (!username) {
+    throw new Error("Username is required.");
+  }
+  if (username.length > 20) {
+    throw new Error("Username must not exceed 20 characters.");
+  }
+
+  // Password validation
+  if (!password) {
+    throw new Error("Password is required.");
+  }
+  if (password.length < 4 || password.length > 8) {
+    throw new Error("Password must be between 4 and 8 characters long.");
+  }
+
+  // Terms & conditions
+  if (!terms) {
+    throw new Error("You must accept the terms and conditions to continue.");
+  }
 }
 
-module.exports = {handleSignupValidation};
+module.exports = { handleSignupValidation };
