@@ -24,7 +24,8 @@ async function handleSignup(req,res) {
 
 async function handleLogin(req,res) {
     const {email,password} = req.body;
-
+    
+    
     try {
         if (!email || !password) throw new Error("invalid credentials");
         const userFound =  await user.findOne({email:email});
@@ -36,7 +37,9 @@ async function handleLogin(req,res) {
             'status':"succesfull"
         });
     } catch (err) {
-         res.status(400).json({'error':err.message})
+         res.status(401).json({error : err.message})
+         console.log(err);
+         
     }
     
 }
