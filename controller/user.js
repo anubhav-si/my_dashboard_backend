@@ -1,12 +1,13 @@
 const user = require('../model/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const {handleSignupValidation} = require('../validation/signupValidation');
 
 async function handleSignup(req,res) {
-    const {username,email,password} = req.body;
+    const {username,email,password,terms} = req.body;
     try {
-        handleSignupValidation(req);
+       handleSignupValidation({ username, email, password,terms});
 
        const hassedPassword =  await bcrypt.hash(password,10);
     await user.create({
@@ -14,16 +15,18 @@ async function handleSignup(req,res) {
         username,
         password:hassedPassword,
     })
+    
     return res.json({'message':'user signedup succesfully',
         'status':'ok'
     });
     } catch (error) {
-        res.status(400).json({'error': error.message})
+        return res.status(400).json({'error': error.message})
     }
 }
 
 async function handleLogin(req,res) {
     const {email,password} = req.body;
+    
     
     
     try {
@@ -32,16 +35,38 @@ async function handleLogin(req,res) {
         if(!userFound) throw new Error("invalid credentials");
         const passwordMatched =  await bcrypt.compare(password,userFound.password);
         if(!passwordMatched) throw new Error("invalid credentials");
+        
+        const token = await jwt.sign({_id:userFound._id},"Dashboard@123")
+        res.cookie("token",token)
         res.json({
             'message':"user varified sucessfully",
             'status':"succesfull"
         });
-    } catch (err) {
-         res.status(401).json({error : err.message})
-         console.log(err);
+    } catch (error) {
+          return res.status(401).json({error : error.message}) ;
+         
          
     }
     
 }
+async function handleProfileinfo(req,res) {
+    const {token} = req.cookies
+   
+    try {
+            if (!token) {
+            throw new Error("cookie expires");
+            
+        }
+        const decoded = await jwt.verify(token,"Dashboard@123");
+        console.log(decoded);
+        const {_id} = decoded;
+        const founduser = await user.findById({_id:_id});
+        const { username ,  email} = founduser
+        console.log(founduser);
+        res.json({username,email})
+    } catch (error) {
+         return res.status(401).json({error : error.message}) ;
+    }
+}
 
-module.exports = {handleSignup,handleLogin};
+module.exports = {handleSignup,handleLogin,handleProfileinfo};

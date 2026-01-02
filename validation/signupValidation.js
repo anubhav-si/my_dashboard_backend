@@ -1,7 +1,7 @@
 const validator = require("validator");
 
-function handleSignupValidation(req, res) {
-  const { email, username, password, terms } = req.body;
+function handleSignupValidation({username, email, password,terms}) {
+ 
 
   // Email validation
   if (!email) {
