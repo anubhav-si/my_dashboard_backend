@@ -25,28 +25,23 @@ async function handleSignup(req,res) {
 }
 
 async function handleLogin(req,res) {
-    const {email,password} = req.body;
+    const founduser = req.founduser;
     
     
     
     try {
-        if (!email || !password) throw new Error("invalid credentials");
-        const userFound =  await user.findOne({email:email});
-        if(!userFound) throw new Error("invalid credentials");
-        const passwordMatched =  await bcrypt.compare(password,userFound.password);
-        if(!passwordMatched) throw new Error("invalid credentials");
         
-        const token = await jwt.sign({_id:userFound._id},"Dashboard@123")
+        const token = await jwt.sign({_id:founduser._id},"Dashboard@123")
         res.cookie("token",token)
         res.json({
             message:"user varified sucessfully",
             status:"succesfull",
             user:{
-                _id: userFound._id,
-                username: userFound.username,
-                email:userFound.email,
-                designation: userFound.designation,
-                createdAt: userFound.createdAt,
+                _id: founduser._id,
+                username: founduser.username,
+                email:founduser.email,
+                designation: founduser.designation,
+                createdAt: founduser.createdAt,
             }
         });
     } catch (error) {

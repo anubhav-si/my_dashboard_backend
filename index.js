@@ -9,7 +9,7 @@ const userRouter = require('./routes/user');
 const app = express();
 const port = 3001
 
-handleDbConnection("mongodb://127.0.0.1:27017/my_dashboard");
+
 
 
 app.use(cors({
@@ -22,4 +22,6 @@ app.use(express.urlencoded({extended:true}));
 
 app.use("/",userRouter);
 
-app.listen(port,()=>console.log('server started'));
+handleDbConnection("mongodb://127.0.0.1:27017/my_dashboard")
+.then(()=>app.listen(port,()=>console.log('server started')))
+.catch(()=>process.exit(1));
