@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-
+const product = require('./productSchema');
 const userSchema = mongoose.Schema({
     username:{
         type:String,
@@ -35,6 +35,10 @@ const userSchema = mongoose.Schema({
         trim:true,
         maxLength:15
     },
+    likedproduct:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"product",
+    }
 },{
     timestamps:true
 });
