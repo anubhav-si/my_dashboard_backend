@@ -32,7 +32,11 @@ async function handleLogin(req,res) {
     try {
         
         const token = await jwt.sign({_id:founduser._id},"Dashboard@123")
-        res.cookie("token",token)
+        res.cookie("token",token,{
+            httpOnly:true,
+            secure:false,
+            sameSite:"lax",
+        })
         res.json({
             message:"user varified sucessfully",
             status:"succesfull",
