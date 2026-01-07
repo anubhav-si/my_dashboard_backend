@@ -13,7 +13,7 @@ const fs = require("fs");
                 folder:"products",
                 resource_type:"auto"
             })
-            console.log(result.url);
+            // console.log(result.url);
              fs.unlinkSync(filepath); 
             return {
                 url:result.secure_url,

@@ -26,11 +26,7 @@ async function handleSignup(req,res) {
 
 async function handleLogin(req,res) {
     const founduser = req.founduser;
-    
-    
-    
-    try {
-        
+    try { 
         const token = await jwt.sign({_id:founduser._id},"Dashboard@123")
         res.cookie("token",token,{
             httpOnly:true,
@@ -64,11 +60,9 @@ async function handleProfileinfo(req,res) {
             
         }
         const decoded = await jwt.verify(token,"Dashboard@123");
-        console.log(decoded);
         const {_id} = decoded;
         const founduser = await user.findById({_id:_id});
         const { username ,  email} = founduser
-        console.log(founduser);
         res.json({username,email})
     } catch (error) {
          return res.status(401).json({error : error.message}) ;

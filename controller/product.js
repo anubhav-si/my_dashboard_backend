@@ -4,9 +4,9 @@ const {uploadToCloudinary} = require("../services/cloudinary");
 
 async function handleAddProduct(req,res) {
     try {
-        const {name,description,category,price} = req.body;
+        const {name,description,price} = req.body;
 
-        if (!name || !description || !category || !price) {
+        if (!name || !description  || !price) {
             throw new Error("all fields are required ");
         }
         if(!req.file){
@@ -16,30 +16,31 @@ async function handleAddProduct(req,res) {
         if (!cloudinaryresult) {
             throw new Error("Image upload failed");  
         }
-
+        // console.log(cloudinaryresult);
+        
         const newproduct = await product.create({
             name,
             description,
-            category,
             price,
             images:[
                 {
-                    url: cloudinaryresult.secure_url,
+                    url: cloudinaryresult.url,
                     publicId: cloudinaryresult.public_id,
 
                 }
-            ]
+            ],
+            productCreatedBy:req.user._id,
 
         })
         return res.status(201).json({
-            status:"ok",
+            statusMessage:"ok",
             message:"Product added successfully",
             product:newproduct,
         })
 
     } catch (error) {
         console.log(error.message);
-        res.status(500).json({
+        res.status(400).json({
             status:"error",
             error:error.message,
         })
