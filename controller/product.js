@@ -33,10 +33,10 @@ async function handleAddProduct(req,res) {
 
         })
         return res.status(201).json({
-            statusMessage:"ok",
-            message:"Product added successfully",
-            product:newproduct,
-        })
+                success: true,
+                message: "Product added successfully",
+                product: newproduct,
+                });
 
     } catch (error) {
         console.log(error.message);
