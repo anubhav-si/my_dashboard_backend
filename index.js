@@ -5,6 +5,7 @@ const cookieparser = require('cookie-parser');
 const {handleDbConnection} = require('./connections/dbconnection');
 const userRouter = require('./routes/user');
 const productRouter = require("./routes/product");
+const messageRouter = require("./routes/message");
 
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.urlencoded({extended:true}));
 
 app.use("/",userRouter);
 app.use("/product",productRouter);
+app.use("/message",messageRouter);
 
 handleDbConnection("mongodb://127.0.0.1:27017/my_dashboard")
 .then(()=>app.listen(port,()=>console.log('server started')))
