@@ -1,21 +1,39 @@
 const mongoose = require("mongoose");
 const user = require("./user");
+const conversation = require("./conversation");
 
 
-const messageSchema = mongoose.Schema({
+const messageSchema = new mongoose.Schema({
+    conversation:{
+        type:mongoose.Schema.ObjectId,
+        ref:"conversation"
+    },
     sender:{
         type:mongoose.Schema.ObjectId,
-        ref:user
+        ref:"user",
+        required:true,
     },
-    receiver:{
-        type:mongoose.Schema.ObjectId,
-        ref:user
-    },
-    messages:{
+    content:{
         type:String,
-    }
+        trim:true,
+    },
+    messageType:{
+        type:String,
+        enum:["text","image","file"],
+        default:"text"
+    },
+    seenBy:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"user",
+        }
+    ]
+},
+{
+    timestamps:true,
 })
 
+messageSchema.index({ conversation: 1, createdAt: 1 });
 const message = mongoose.model("message",messageSchema);
 
 module.exports = message;

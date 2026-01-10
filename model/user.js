@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const product = require('./productSchema');
-const userSchema = mongoose.Schema({
+const userSchema = new  mongoose.Schema({
     username:{
         type:String,
         required:true,

@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const user = require("./user");
 
-const productSchema = mongoose.Schema({
+const productSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true,
