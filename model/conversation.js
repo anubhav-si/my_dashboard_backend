@@ -29,7 +29,7 @@ const conversationSchema = new mongoose.Schema({
 },{
     timestamps:true,
 })
-
+conversationSchema.index({ participants: 1 });
 
 const conversation = mongoose.model("conversation",conversationSchema);
 
