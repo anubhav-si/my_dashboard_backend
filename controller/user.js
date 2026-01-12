@@ -52,21 +52,37 @@ async function handleLogin(req,res) {
     
 }
 async function handleProfileinfo(req,res) {
-    const {token} = req.cookies
+    
    
     try {
-            if (!token) {
-            throw new Error("cookie expires");
-            
-        }
-        const decoded = await jwt.verify(token,"Dashboard@123");
-        const {_id} = decoded;
-        const founduser = await user.findById({_id:_id});
-        const { username ,  email} = founduser
-        res.json({username,email})
+        const user = req.user
+        if (!user) return;
+        res.json(user)
     } catch (error) {
          return res.status(401).json({error : error.message}) ;
     }
 }
 
-module.exports = {handleSignup,handleLogin,handleProfileinfo};
+async function handleLogout(req,res) {
+        try {
+        
+
+            res.clearCookie("token",{
+                httpOnly:true,
+                secure:false,
+                sameSite:"lax",
+            })
+            res.status(200).json({
+                success: true,
+                message: "Logged out successfully",
+            })
+
+            
+        } catch (err) {
+            res.status(400).json({
+                success:false,
+            })
+        }
+}
+
+module.exports = {handleSignup,handleLogin,handleProfileinfo,handleLogout};
