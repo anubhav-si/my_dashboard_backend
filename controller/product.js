@@ -4,9 +4,9 @@ const {uploadToCloudinary} = require("../services/cloudinary");
 
 async function handleAddProduct(req,res) {
     try {
-        const {name,description,price} = req.body;
+        const {name,description,price,category} = req.body;
 
-        if (!name || !description  || !price) {
+        if (!name || !description  || !price || !category) {
             throw new Error("all fields are required ");
         }
         if(!req.file){
@@ -22,6 +22,7 @@ async function handleAddProduct(req,res) {
             name,
             description,
             price,
+            category,
             images:[
                 {
                     url: cloudinaryresult.url,
