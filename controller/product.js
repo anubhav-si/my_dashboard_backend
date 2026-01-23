@@ -74,5 +74,26 @@ async function handleAddProduct(req,res) {
  }
 
 
+ async function handleGetAllProduct24(req,res) {
+    try {
+        const products = await product.find({});
+        if(!products) throw new Error("products not found");
+        
+        return res.status(200).json({
+                    success:true,
+                    count:products.length,
+                    products,
+                });
+    } catch (error) {
+        console.log(error);
+        
+         return res.status(500).json({
+            success:true,
+            message:"failed to fetch products ",
+        });
+    }
+ }
 
-module.exports = {handleAddProduct,handleGetAllProduct};
+
+
+module.exports = {handleAddProduct,handleGetAllProduct,handleGetAllProduct24};

@@ -6,6 +6,7 @@ const {handleDbConnection} = require('./connections/dbconnection');
 const userRouter = require('./routes/user');
 const productRouter = require("./routes/product");
 const messageRouter = require("./routes/message");
+const ProductRouter24 = require("./routes/24Products");
 
 
 const app = express();
@@ -13,7 +14,7 @@ const port = 3001
 
 
 app.use(cors({
-    origin:["http://localhost:5173"],
+    origin:["http://localhost:5173","http://localhost:5174"],
     credentials:true
 }))
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({extended:true}));
 app.use("/",userRouter);
 app.use("/product",productRouter);
 app.use("/message",messageRouter);
+app.use("/web",ProductRouter24);
 
 handleDbConnection("mongodb://127.0.0.1:27017/my_dashboard")
 .then(()=>app.listen(port,()=>console.log('server started')))
