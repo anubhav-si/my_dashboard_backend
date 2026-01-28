@@ -10,6 +10,8 @@ const productRouter = express.Router();
 
 productRouter.post("/addproduct",jwtAuthorization,upload.single("image"),handleAddProduct);
 productRouter.get("/getproducts",jwtAuthorization,handleGetAllProduct);
+ 
+
 
 
 

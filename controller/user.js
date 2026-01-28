@@ -40,7 +40,7 @@ async function handleLogin(req,res) {
                 _id: founduser._id,
                 username: founduser.username,
                 email:founduser.email,
-                designation: founduser.designation,
+                designation: founduser.role,
                 createdAt: founduser.createdAt,
             }
         });

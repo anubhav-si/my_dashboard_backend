@@ -29,15 +29,32 @@ const userSchema = new  mongoose.Schema({
         minLength:4,
        
     },
-    designation:{
+    role:{
         type:String,
-        default:"employe",
+        enum:["user","admin"],
         trim:true,
-        maxLength:15
+        default:true,
     },
-    likedproduct:{
+    wishlist:[
+        {
         type:mongoose.Schema.Types.ObjectId,
         ref:"product",
+    },
+    ],
+    addresses:[
+        {
+            fullName: String,
+            phone: String,
+            street: String,
+            city: String,
+            state: String,
+            pincode: String,
+            country:{type: String,default: "india"},
+        }
+    ],
+    isActive: {
+        type: Boolean,
+        default: true,
     }
 },{
     timestamps:true
