@@ -6,21 +6,36 @@ const {handleSignupValidation} = require('../validation/signupValidation');
 
 async function handleSignup(req,res) {
     const {username,email,password,terms} = req.body;
+    
     try {
        handleSignupValidation({ username, email, password,terms});
 
        const hassedPassword =  await bcrypt.hash(password,10);
-    await user.create({
+    const newuser = await user.create({
         email,
         username,
         password:hassedPassword,
     })
+    // console.log(newuser);
     
-    return res.json({'message':'user signedup succesfully',
-        'status':'ok'
-    });
+    return res.status(201).json({
+            success: true,
+            status: "ok",
+            message: "User signed up successfully",
+            });
     } catch (error) {
-        return res.status(400).json({'error': error.message})
+        console.log(error.errorResponse);
+        if(error.code === 11000){
+            res.status(409).json({
+                status:"fail",
+                code: "EMAIL_EXISTS",
+                message: "Email already registered",
+            });
+        }
+         return res.status(400).json({
+                success: false,
+                message: error.message || "Signup failed",
+            });
     }
 }
 
@@ -82,6 +97,7 @@ async function handleLogout(req,res) {
             res.status(400).json({
                 success:false,
             })
+            
         }
 }
 

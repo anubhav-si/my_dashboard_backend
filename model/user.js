@@ -33,7 +33,7 @@ const userSchema = new  mongoose.Schema({
         type:String,
         enum:["user","admin"],
         trim:true,
-        default:true,
+        default:"user",
     },
     wishlist:[
         {

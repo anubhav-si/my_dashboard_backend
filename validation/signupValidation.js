@@ -28,9 +28,12 @@ function handleSignupValidation({username, email, password,terms}) {
   }
 
   // Terms & conditions
-  if (!terms) {
-    throw new Error("You must accept the terms and conditions to continue.");
-  }
+  // if (!terms) {
+  //   throw new Error("You must accept the terms and conditions to continue.");
+  // }
+  
+  
+  return true;
 }
 
 module.exports = { handleSignupValidation };
