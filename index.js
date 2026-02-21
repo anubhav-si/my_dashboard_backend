@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require('express');
 const cors = require('cors');
 const cookieparser = require('cookie-parser');
@@ -10,7 +11,7 @@ const ProductRouter24 = require("./routes/24Products");
 
 
 const app = express();
-const port = 3001
+const port = process.env.PORT;
 
 
 app.use(cors({
@@ -27,6 +28,6 @@ app.use("/product",productRouter);
 app.use("/message",messageRouter);
 app.use("/web",ProductRouter24);
 
-handleDbConnection("mongodb://127.0.0.1:27017/my_dashboard")
+handleDbConnection(process.env.MONGO_URI)
 .then(()=>app.listen(port,()=>console.log('server started')))
 .catch(()=>process.exit(1));

@@ -42,7 +42,7 @@ async function handleSignup(req,res) {
 async function handleLogin(req,res) {
     const founduser = req.founduser;
     try { 
-        const token = await jwt.sign({_id:founduser._id},"Dashboard@123")
+        const token = await jwt.sign({_id:founduser._id},process.env.JWT_SECRET);
         res.cookie("token",token,{
             httpOnly:true,
             secure:false,
